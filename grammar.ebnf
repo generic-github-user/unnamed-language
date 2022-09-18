@@ -8,6 +8,9 @@ punctuation = "`" | "~" |
 							"," | "." | ";" | ":" | "/" | "\\" | "|"
 char = digit | letter | punctuation
 
+string = "'" char "'"
+literal = int | float | string
+
 unary_operator = "~"
 binary_operator = "+" | "-" | "*" | "**" | "/" | "//" | "%" |
 								  "^" | "~" | "&" | "|" | "<<" | ">>" |
@@ -16,3 +19,7 @@ binary_operator = "+" | "-" | "*" | "**" | "/" | "//" | "%" |
 op = unary_operator | binary_operator
 operation = op operand -> unary |
 						operand op operand -> binary
+
+call = identifier tuple
+expression = operation | call | literal
+program = expression*
