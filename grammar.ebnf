@@ -7,3 +7,12 @@ punctuation = "`" | "~" |
 							"(" | ")" | "[" | "]" | "{" | "}" |
 							"," | "." | ";" | ":" | "/" | "\\" | "|"
 char = digit | letter | punctuation
+
+unary_operator = "~"
+binary_operator = "+" | "-" | "*" | "**" | "/" | "//" | "%" |
+								  "^" | "~" | "&" | "|" | "<<" | ">>" |
+									"." | ".." | ":" |
+									"<" | ">" | "<=" | ">=" | "==" | "!="
+op = unary_operator | binary_operator
+operation = op operand -> unary |
+						operand op operand -> binary
