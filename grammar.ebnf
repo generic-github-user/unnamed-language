@@ -1,0 +1,9 @@
+digit = "0".."9"
+lowercase = "a".."z"
+uppercase = "A".."Z"
+letter = lowercase | uppercase
+punctuation = "`" | "~" |
+						  "!" | "@" | "#" | "$" | "%" | "^" | "&" | "*" |
+							"(" | ")" | "[" | "]" | "{" | "}" |
+							"," | "." | ";" | ":" | "/" | "\\" | "|"
+char = digit | letter | punctuation
