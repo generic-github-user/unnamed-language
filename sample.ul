@@ -40,3 +40,20 @@ fn (
 		(funcs: Vec<Func<T, U>; len > 0>) =>
 				funcs.reduce(compose)
 )
+
+fn is-prime (n: int) => range( 2 n.sqrt().ceil() ).none( x => n % x == 0 )
+
+fn (
+		'primes,
+		(limit: int > 2 -> result: Vec<int>),
+		range( 2 limit ).filter(is-prime)
+)
+
+// Prints prime numbers for which the sum of their digits is also prime
+primes(10 ** 4).filter(x => x:digits:sum() | is-prime).print()
+
+// Prints prime numbers that are still prime when their digits are reversed
+primes(10 ** 4).filter(x => x.to_string().reverse().to_int() | is-prime).print()
+
+// Prints prime numbers that are also palindromes
+primes(10 ** 4).filter(x => x.to_string() | (s => s == s.reverse())).print()
