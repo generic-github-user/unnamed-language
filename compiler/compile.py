@@ -1,6 +1,6 @@
-from node import Node
-from token import Token
-from pylist import List
+from compiler.node import Node
+from compiler.token import Token
+from compiler.pylist import List
 import textwrap
 
 
@@ -91,3 +91,5 @@ def compile(self: Node) -> str:
                 return self.emit_code()
             raise NotImplementedError(self)
 
+
+print(Node([], 'program'))

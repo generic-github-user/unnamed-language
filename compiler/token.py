@@ -2,7 +2,7 @@ from __future__ import annotations
 import lark
 
 # from .node import Node
-from .resolve_names import resolve_names
+# from .resolve_names import resolve_names
 
 
 class Node:
@@ -38,8 +38,8 @@ class Token:
     def __str__(self) -> str:
         return f'Token <{self.type} ~ {self.vtype}, {self.line}:{self.column}> {self.value}'
 
-    def resolve_names(self, namespace):
-        return resolve_names(self, namespace)
+    # def resolve_names(self, namespace):
+    #     return resolve_names(self, namespace)
 
     def infer_types(self):
         match self.type:

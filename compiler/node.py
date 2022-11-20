@@ -2,7 +2,7 @@ from __future__ import annotations
 import lark
 from typing import Callable, Union
 
-from pylist import List
+from compiler.pylist import List
 
 
 class Node:
@@ -44,6 +44,3 @@ class Node:
 
         for k, v in kwargs.items():
             setattr(self, k, v)
-        if update:
-            self.update_attrs()
-
