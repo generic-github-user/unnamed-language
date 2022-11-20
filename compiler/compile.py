@@ -1,4 +1,10 @@
-def compile (self: Node) -> str:
+from node import Node
+from token import Token
+from pylist import List
+import textwrap
+
+
+def compile(self: Node) -> str:
     """Generates semantically equivalent code for the target platform/compiler
     (not guaranteed to be formatted or comply with typical style conventions).
     Currently, only C is supported. This method works recursively on a "C-like"
@@ -81,7 +87,7 @@ def compile (self: Node) -> str:
             return textwrap.dedent(f'{self.left.emit_code()} = {self.right.emit_code()}')
 
         case _:
-            if isinstance(self, token.Token):
+            if isinstance(self, Token):
                 return self.emit_code()
             raise NotImplementedError(self)
 
