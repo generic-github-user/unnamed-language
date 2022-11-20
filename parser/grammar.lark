@@ -20,13 +20,15 @@ BINARY_OPERATOR : "+" | "-" | "*" | "**" | "/" | "//" | "%" |
                   "." | ".." | ":" |
                   "<" | ">" | "<=" | ">=" | "==" | "!="
 
-OP = UNARY_OPERATOR | BINARY_OPERATOR
-operation id OP expression -> unary |
+OP : UNARY_OPERATOR | BINARY_OPERATOR
+operation : OP expression -> unary |
             expression OP expression -> binary
 
 ID : LETTER (LETTER | DIGIT | "_")*
-tuple : 
-call = expression tuple
-expression = operation | call | literal
-program = expression*
+tuple : "(" (expression ("," expression)?)* ")" 
+call : expression tuple
+expression : operation | call | literal | tuple
+program : expression*
 
+list : "[" (expression ("," expression)?)* "]"
+ 
