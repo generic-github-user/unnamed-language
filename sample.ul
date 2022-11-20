@@ -3,3 +3,23 @@
 // later comprise practical documentation for various facilities it provides).
 // It should be considered a very rough draft and all the constructs implied in
 // these examples are subject to change.
+
+// Defines a function (this is one of a handful of special functions that are
+// handled at the implementation level)
+fn (
+		// The function name, an identifier/symbol (hence the quote)
+		'primes,
+		// Arguments to this function (is empty in this case)
+		(),
+		// The function body
+		range ( 2 100 ) .map (
+				n
+				if (
+						range( 2 n.sqrt().ceil() )
+								.none( x n % x == 0 )
+						println( n )
+				)
+		)
+)
+// Calls the function
+primes()
