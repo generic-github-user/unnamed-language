@@ -1,10 +1,18 @@
+from __future__ import annotations
+import lark
+from typing import Callable, Union
+
+from pylist import List
+
+
 class Node:
-    def __init__(self, source: lark.Tree = None,
+    def __init__(self,
+                 children: Union[list[Node], List[Node]] = None,
+                 type_: str = None,
+                 source: lark.Tree = None,
                  parent: Node = None,
                  depth: int = 0,
                  root: Node = None,
-                 children: Union[list[Node], List[Node]] = None,
-                 type_: str = None,
                  vtype: str = None,
                  names: dict[str, Node] = None,
                  update: bool = True, **kwargs):

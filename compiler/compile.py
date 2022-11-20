@@ -18,14 +18,14 @@ def compile(self: Node) -> str:
     match self.type:
         case 'program':
             # TODO: handle outer function generation using tree rewriting
-            body = self.children.map(Node.emit_code).join('\n')
+            body = self.children.map(compile).join('\n')
             return '\n'.join(['int main () {', body, '}'])
 
         case 'start' | 'form':
-            return self.children.map(Node.emit_code).join('\n')
+            return self.children.map(compile).join('\n')
 
         case 'block':
-            return '{\n' + self.children.map(Node.emit_code).join('\n') + '\n}'
+            return '{\n' + self.children.map(compile).join('\n') + '\n}'
 
         case 'statement':
             return f'{self.children[0].emit_code()};'
@@ -55,10 +55,10 @@ def compile(self: Node) -> str:
 
         case 'tuple':
             assert None not in self.children, self
-            return self.children.map(Node.emit_code).join(', ')
+            return self.children.map(compile).join(', ')
 
         case 'list':
-            return self.children.map(Node.emit_code).join(', ')
+            return self.children.map(compile).join(', ')
 
         case 'call':
             return f'{self.f.emit_code()}({self.args.emit_code()})'
@@ -69,7 +69,7 @@ def compile(self: Node) -> str:
             # if they are present in the input tree
             return List([
                 self.left, self.op, self.right
-            ]).map(Node.emit_code).join(' ')
+            ]).map(compile).join(' ')
 
         case 'INT':
             # one of the few lucky cases where the parse output is always
