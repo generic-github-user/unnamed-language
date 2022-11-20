@@ -23,3 +23,20 @@ fn (
 )
 // Calls the function
 primes()
+
+"Performs function composition; can either be called with a pair of functions
+(`f` and `g`) or a vector of functions. Will return a new function with the
+same input type as the first function and the same output type as the second."
+fn (
+		compose,
+
+		// this signature describes the version of `compose` that is dispatched
+		// with two function inputs, `f` and `g`
+		(f: Func<T, U>, g: Func<U, V> -> h: Func<T, V>) =>
+				(args => g(f(args)))
+
+		// there is an implicit requirement that `funcs[0]`'s output and
+		// `funcs[1]`'s input have the same type, and so on
+		(funcs: Vec<Func<T, U>; len > 0>) =>
+				funcs.reduce(compose)
+)
