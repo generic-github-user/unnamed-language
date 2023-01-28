@@ -71,7 +71,7 @@ def compile(self: Node) -> str:
                 self.left, self.op, self.right
             ]).map(compile).join(' ')
 
-        case 'INT':
+        case 'INT' | 'FLOAT':
             # one of the few lucky cases where the parse output is always
             # (?) equivaent to its native form (an exception may be methods
             # called on number/string literals, but this should be handled
@@ -92,4 +92,11 @@ def compile(self: Node) -> str:
             raise NotImplementedError(self)
 
 
-print(Node([], 'program'))
+def comptest(node):
+    print(node)
+    print(compile(node))
+
+
+comptest(Node([Node([Token('print', 'IDENTIFIER'),
+                     Token('hello', 'STRING')], 'call')],
+              'program'))

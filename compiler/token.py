@@ -11,10 +11,10 @@ class Node:
 
 class Token:
     def __init__(self,
+                 value: str = None,
+                 type_: str = None,
                  source: lark.Token = None,
                  parent: Node = None,
-                 type_: str = None,
-                 value: str = None,
                  line: int = None,
                  column: int = None):
         self.parent = parent
