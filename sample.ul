@@ -1,0 +1,106 @@
+// This file contains examples of various simple programming tasks and serves
+// mainly to help flesh out the syntax and semantics of the language (and will
+// later comprise practical documentation for various facilities it provides).
+// It should be considered a very rough draft and all the constructs implied in
+// these examples are subject to change.
+
+// Defines a function (this is one of a handful of special functions that are
+// handled at the implementation level)
+fn (
+		// The function name, an identifier/symbol (hence the quote)
+		'primes,
+		// Arguments to this function (is empty in this case)
+		(),
+		// The function body
+		range ( 2 100 ) .map (
+				n
+				if (
+						range( 2 n.sqrt().ceil() )
+								.none( x n % x == 0 )
+						println( n )
+				)
+		)
+)
+// Calls the function
+primes()
+
+"Performs function composition; can either be called with a pair of functions
+(`f` and `g`) or a vector of functions. Will return a new function with the
+same input type as the first function and the same output type as the second."
+fn (
+		compose,
+
+		// this signature describes the version of `compose` that is dispatched
+		// with two function inputs, `f` and `g`
+		(f: Func<T, U>, g: Func<U, V> -> h: Func<T, V>) =>
+				(args => g(f(args)))
+
+		// there is an implicit requirement that `funcs[0]`'s output and
+		// `funcs[1]`'s input have the same type, and so on
+		(funcs: Vec<Func<T, U>; len > 0>) =>
+				funcs.reduce(compose)
+)
+
+fn is-prime (n: int) => range( 2 n.sqrt().ceil() ).none( x => n % x == 0 )
+
+fn (
+		'primes,
+		(limit: int > 2 -> result: Vec<int>),
+		range( 2 limit ).filter(is-prime)
+)
+
+// Prints prime numbers for which the sum of their digits is also prime
+primes(10 ** 4).filter(x => x:digits:sum() | is-prime).print()
+
+// Prints prime numbers that are still prime when their digits are reversed
+primes(10 ** 4).filter(x => x.to_string().reverse().to_int() | is-prime).print()
+
+// Prints prime numbers that are also palindromes
+primes(10 ** 4).filter(x => x.to_string() | (s => s == s.reverse())).print()
+
+// Prints pairs of prime numbers whose base 10 concatenation is prime (also see
+// https://rosettacode.org/wiki/Concatenate_two_primes_is_also_prime)
+// with()
+set('limit, 10 ** 4)
+(primes(limit) @ primes(limit))
+		.filter(x, y => x.to_string() + y.to_string | to_int | is-prime)
+		.print()
+
+// Does the same as the last example but with `n` primes
+set('limit, 10 ** 4)
+fn(
+		'primecat,
+		(n: int -> Vec<int>),
+		cartprod(range(0, n).map(_ => primes(limit)))
+				.filter(p => String.concatenate | to_int | is-prime)
+)
+primecat(3).print()
+
+// Prints a list of circular primes (https://rosettacode.org/wiki/Circular_primes)
+primes(10 ** 4)
+		.filter(x => x.to_string().cyclic_permute().all(y => y.to_int() | is-prime))
+		.print()
+
+// Prints [almost prime](https://en.wikipedia.org/wiki/Almost_prime) numbers
+fn(
+		'almost_prime,
+		(k: int, limit: int -> Vec<int>),
+		cartprod(range(0, n)
+				.map(_ => primes(limit)))
+				.map(product)
+				.unique()
+)
+almost_prime(2).print()
+
+// Prints pairs of prime numbers whose difference is also prime
+set('limit, 10 ** 4)
+(primes(limit) @ primes(limit))
+		.filter(x, y => (x - y).abs() | is-prime)
+		.print()
+// Prints numbers for which the number of smaller (or equal) prime numbers is
+// itself prime
+range(0, 10 ** 4)
+		.filter(x => is-prime())
+fn('iterate_func,
+		(func: Func<T>, n: int -> Func<T>),
+		Vec.new.filled().reduce())
