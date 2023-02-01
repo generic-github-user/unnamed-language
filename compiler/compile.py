@@ -34,21 +34,19 @@ def compile(self: Node) -> str:
             # this is a hotfix to handle "wrapped" AST nodes; a single form
             # in the source code can sometimes produce several nested
             # statement, expression, block, etc. nodes
-            return self.children.map(Node.emit_code).join('')
+            return self.children.map(compile).join('')
 
         case 'return':
-            return f'return {self.arg.emit_code()}'
+            return f'return {compile(self["arg"])}'
 
         case 'function_declaration':
-            return List([self.return_type.emit_code(),
-                         self.name.emit_code(),
+            return List([self["return_type"],
+                         self["name"],
                          '()',
-                         self.body.emit_code()]).join(' ')
+                         self["body"]]).map(compile).join(' ')
 
-        case 'function':
-            if self.definition == '[internal]':
-                return ''
-            return self.definition.emit_code()
+        # case 'function':
+            # return self.definition.emit_code()
 
         case 'type':
             return ''
@@ -61,15 +59,16 @@ def compile(self: Node) -> str:
             return self.children.map(compile).join(', ')
 
         case 'call':
-            return f'{self.f.emit_code()}({self.args.emit_code()})'
+            return f'{compile(self["f"])}({compile(self["args"])})'
 
         case 'bin_op':
             # prior to this translation, nonstandard operators like ".."
             # must have been lowered; in the future an error will be thrown
             # if they are present in the input tree
-            return List([
-                self.left, self.op, self.right
-            ]).map(compile).join(' ')
+            return self.children.map(compile).join(' ')
+
+        case 'IDENTIFIER':
+            return self.value
 
         case 'INT' | 'FLOAT':
             # one of the few lucky cases where the parse output is always
@@ -78,17 +77,18 @@ def compile(self: Node) -> str:
             # during the rewriting stage)
             return self.value
 
+        case 'STRING':
+            return f'"{self.value}"'
+
         case 'let_stmt':
-            assert self.right.vtype is not None
-            return textwrap.dedent(f'{self.right.vtype} {self.left.emit_code()} = {self.right.emit_code()}')
+            assert self['right'].vtype is not None
+            return textwrap.dedent(f"{self['right'].vtype} {self['left'].emit_code()} = {self['right'].emit_code()}")
 
         case 'assignment':
-            assert self.right.vtype is not None
-            return textwrap.dedent(f'{self.left.emit_code()} = {self.right.emit_code()}')
+            assert self['right'].vtype is not None
+            return textwrap.dedent(f"{self['left'].emit_code()} = {self['right'].emit_code()}")
 
         case _:
-            if isinstance(self, Token):
-                return self.emit_code()
             raise NotImplementedError(self)
 
 
@@ -98,5 +98,4 @@ def comptest(node):
 
 
 comptest(Node([Node([Token('print', 'IDENTIFIER'),
-                     Token('hello', 'STRING')], 'call')],
-              'program'))
+                     Token('hello', 'STRING')], 'call')], 'program'))

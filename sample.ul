@@ -104,3 +104,5 @@ range(0, 10 ** 4)
 fn('iterate_func,
 		(func: Func<T>, n: int -> Func<T>),
 		Vec.new.filled().reduce())
+
+Tuple = Sequence(Type)

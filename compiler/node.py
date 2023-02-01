@@ -46,7 +46,9 @@ class Node:
         self.children[self.aliases.index(key)] = value
 
     def __str__(self) -> str:
-        return f'Node <{self.type} ~ {self.vtype}> ({self.depth})' + '\n' +\
-            '\n'.join('  '*self.depth + str(n) for n in self.children)
+        def indent(x):
+            return '\n'.join('  ' + line for line in x.splitlines())
+        return f'Node <{self.type} ~ {self.vtype}>\n' +\
+            '\n'.join(indent(str(n)) for n in self.children)
 
     __repr__ = __str__
